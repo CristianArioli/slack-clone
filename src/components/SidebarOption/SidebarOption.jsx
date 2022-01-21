@@ -64,6 +64,7 @@ function SidebarOption({
           channelAdmin = admin;
           return true;
         }
+        return false;
       });
 
       if (channelAdmin === user.displayName && channelExists && channelId) {
@@ -91,11 +92,10 @@ function SidebarOption({
     if (id) {
       let channelAdmin;
 
-      channels?.docs.find((doc) => {
+      channels?.docs.forEach((doc) => {
         const { admin } = doc.data();
         if (doc.id === id) {
           channelAdmin = admin;
-          return true;
         }
       });
       

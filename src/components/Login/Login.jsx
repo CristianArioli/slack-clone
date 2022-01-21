@@ -17,7 +17,7 @@ function Login() {
           alt=""
         />
         <h1>Se conecte ao Servidor do Clone Slack</h1>
-        <p>Url do Projeto: github</p>
+        <p><a href="https://github.com/CristianArioli/slack-clone" target="_blank">Link do Projeto no GitHub</a></p>
 
         <Button onClick={signIn}> Entrar com o Google </Button>
       </LoginInnerContainer>
