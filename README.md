@@ -1,4 +1,4 @@
-# Projeto Slack-Clonec
+# Projeto Slack-Clone
 O objetivo do projeto foi criar uma aplicação de clone do aplicativo Slack utlizando React, Styled-Components para estilização, Redux para controle de estado e Firebase para o banco de dados.
 
 ### Link do projeto publicado no netlify
