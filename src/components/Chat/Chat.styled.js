@@ -45,7 +45,20 @@ const HeaderRight = styled.div`
 const ChatMessages = styled.div``;
 
 const ChatBottom = styled.div`
-  padding-bottom: 200px;
+  padding-bottom: 100px;
+`;
+
+const NoRoomSelectedContainer = styled.div`
+  display: grid;
+  place-items: center;
+  height: 87vh;
+  text-align: center;
+  padding: 30px;
+  color: var(--slack-color);
+
+  > div > p {
+    font-size: 14px;
+  }
 `;
 
 export {
@@ -55,4 +68,5 @@ export {
   HeaderRight,
   ChatMessages,
   ChatBottom,
+  NoRoomSelectedContainer,
 };

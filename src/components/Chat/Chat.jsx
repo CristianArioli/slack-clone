@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { selectRoomId } from "../../features/appSlice";
-import { db } from "../../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "../../firebase";
 import { useDocument, useCollection } from "react-firebase-hooks/firestore";
 import { InfoOutlined, StarBorderOutlined } from "@material-ui/icons";
 import ChatInput from "../ChatInput/ChatInput";
@@ -13,9 +14,12 @@ import {
   HeaderRight,
   ChatMessages,
   ChatBottom,
+  NoRoomSelectedContainer,
 } from "./Chat.styled";
 
 function Chat() {
+  const [user] = useAuthState(auth);
+
   const chatRef = useRef(null);
   const roomId = useSelector(selectRoomId);
   const [roomDetails] = useDocument(
@@ -35,11 +39,11 @@ function Chat() {
     chatRef?.current?.scrollIntoView({
       behavior: "smooth",
     });
-  }, [roomId, loading]);
+  }, [roomId, loading, roomMessages]);
 
   return (
     <ChatContainer>
-      {roomDetails && roomMessages && (
+      {roomDetails && roomMessages ? (
         <>
           <Header>
             <HeaderLeft>
@@ -74,11 +78,18 @@ function Chat() {
           </ChatMessages>
 
           <ChatInput
-            chatRef={chatRef}
             channelName={roomDetails?.data().name}
             channelId={roomId}
           />
         </>
+      ) : (
+        <NoRoomSelectedContainer>
+          <div>
+            <h2>Bem-Vindo(a) {user.displayName}</h2>
+            <p>Para começar, selecione ou crie um novo canal!</p>
+            <p>Ah, o chat funciona em tempo real! 😉</p>
+          </div>
+        </NoRoomSelectedContainer>
       )}
     </ChatContainer>
   );

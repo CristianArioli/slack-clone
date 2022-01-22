@@ -4,7 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Button } from "@material-ui/core";
 import { ChatInputContainer } from "./ChatInput.styled";
 
-function ChatInput({ channelName, channelId, chatRef }) {
+function ChatInput({ channelName, channelId }) {
   const inputRef = useRef(null);
   const [user] = useAuthState(auth);
 
@@ -20,10 +20,6 @@ function ChatInput({ channelName, channelId, chatRef }) {
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       user: user.displayName,
       userImage: user.photoURL,
-    });
-
-    chatRef.current.scrollIntoView({
-      behavior: "smooth",
     });
 
     inputRef.current.value = "";
