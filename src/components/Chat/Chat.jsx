@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectRoomId } from "../../features/appSlice";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -7,6 +7,7 @@ import { useDocument, useCollection } from "react-firebase-hooks/firestore";
 import { InfoOutlined, StarBorderOutlined } from "@material-ui/icons";
 import ChatInput from "../ChatInput/ChatInput";
 import Message from "../Message/Message";
+import Spinner from "react-spinkit";
 import {
   ChatContainer,
   Header,
@@ -22,6 +23,9 @@ function Chat() {
 
   const chatRef = useRef(null);
   const roomId = useSelector(selectRoomId);
+
+  const [roomIdHasChanged, setRoomIdHasChanged] = useState(false);
+
   const [roomDetails] = useDocument(
     roomId && db.collection("rooms").doc(roomId)
   );
@@ -35,11 +39,34 @@ function Chat() {
         .orderBy("timestamp", "asc")
   );
 
+  const renderWelcomeOrSpinner = () => {
+    if (!roomIdHasChanged) {
+      return (
+        <NoRoomSelectedContainer>
+          <div>
+            <h2>Bem-Vindo(a) {user.displayName}</h2>
+            <p>Para começar, selecione ou crie um novo canal!</p>
+            <p>Ah, o chat funciona em tempo real! 😉</p>
+          </div>
+        </NoRoomSelectedContainer>
+      );
+    }
+    return (
+      <NoRoomSelectedContainer>
+        <Spinner name="ball-spin-fade-loader" color="purple" fadeIn="none" />
+      </NoRoomSelectedContainer>
+    );
+  };
+
   useEffect(() => {
     chatRef?.current?.scrollIntoView({
       behavior: "smooth",
     });
   }, [roomId, loading, roomMessages]);
+
+  useEffect(() => {
+    roomId && setRoomIdHasChanged(true);
+  }, [roomId]);
 
   return (
     <ChatContainer>
@@ -83,13 +110,7 @@ function Chat() {
           />
         </>
       ) : (
-        <NoRoomSelectedContainer>
-          <div>
-            <h2>Bem-Vindo(a) {user.displayName}</h2>
-            <p>Para começar, selecione ou crie um novo canal!</p>
-            <p>Ah, o chat funciona em tempo real! 😉</p>
-          </div>
-        </NoRoomSelectedContainer>
+        renderWelcomeOrSpinner()
       )}
     </ChatContainer>
   );
