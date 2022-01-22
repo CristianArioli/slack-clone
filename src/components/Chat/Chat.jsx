@@ -65,7 +65,7 @@ function Chat() {
   }, [roomId, loading, roomMessages]);
 
   useEffect(() => {
-    roomId && setRoomIdHasChanged(true);
+    roomId ? setRoomIdHasChanged(true) : setRoomIdHasChanged(false);
   }, [roomId]);
 
   return (
